@@ -4,11 +4,16 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import Image from "next/image";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
+import { UseDispatch,useDispatch,useSelector } from "react-redux";
+import { login } from "../store/authSlice";
+// import { loginStart } from "../store/authSlice";
+
 
 
 
 export default function Login() {
     const router = useRouter();
+    const dispatch = useDispatch()
     const validationSchema = Yup.object().shape({
       email: Yup.string()
         .email("Invalid email address")
@@ -20,7 +25,14 @@ export default function Login() {
     
     const handleSubmit = (value: Object) => {
       console.log("=-==-=-=--=values",value)
-      router.push('profile')
+      dispatch(login(value))
+      .unwrap()
+      .then(async(response:any)=>{
+        console.log("response",response?.data)
+        if(response?.data?.code == 200){
+            router.push('profile')
+        }
+      })
     };
 
   return (

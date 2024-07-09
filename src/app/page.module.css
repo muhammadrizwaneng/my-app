@@ -228,3 +228,39 @@
     transform: rotate(0deg);
   }
 }
+.profileContainer {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profileName {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.profileImageContainer {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profileImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profileInfoContainer {
+  margin-top: 20px;
+}
+
+.profileInfo {
+  margin-bottom: 10px;
+}
+
+.profileInfo span {
+  font-weight: bold;
+}
