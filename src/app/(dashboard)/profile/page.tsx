@@ -2,18 +2,33 @@
 
 import Image from "next/image";
 import styles from "../../page.module.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { logout } from "@/app/store/authSlice";
+import { useRouter } from "next/navigation";
 
 export default function Profile() {
   const selectUserInfo = (state: any) => state?.user;
   const userData = useSelector(selectUserInfo);
   const [userInfo, setuserInfo] = useState<any>("");
 
+console.log("-=-==--=userData",userData)
+const router = useRouter();
+
+const dispatch = useDispatch()
 
   useEffect(() => {
-    setuserInfo(userData)
+    if(!userData){
+      router.push("/login")
+    } else {
+      setuserInfo(userData)
+    }
   }, [userData])
+
+  const handleLogout = ()=>{
+    dispatch(logout())
+    
+  }
   return (
     <main className={styles.profileContainer}>
       <h1 className={styles.profileName}>{userInfo.first_name} {userInfo.last_name}'s Profile</h1>
@@ -33,6 +48,9 @@ export default function Profile() {
         <p className={styles.profileInfo}>
           Phone Number: <span>{userInfo.phoneNumber}</span>
         </p>
+      </div>
+      <div>
+        <a onClick={handleLogout}>Logout</a>
       </div>
     </main>
   );
