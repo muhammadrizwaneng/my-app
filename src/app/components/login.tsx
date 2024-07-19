@@ -6,8 +6,12 @@ import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/authSlice";
+import { useEffect } from "react";
 
 export default function Login() {
+  const selectUserInfo = (state: any) => state?.user;
+  const userData = useSelector(selectUserInfo);
+
   const router = useRouter();
   const dispatch = useDispatch();
   const validationSchema = Yup.object().shape({
@@ -20,12 +24,17 @@ export default function Login() {
   });
 
   const handleSubmit = (values: Object) => {
-    console.log("=-==-=-=--=values", values);
+    console.log("=-==-=-=--w=values", values);
     dispatch(login(values))
       .unwrap()
       .then(async (response: any) => {
         console.log("response", response?.data);
         if (response?.data?.code == 200) {
+          const currentDate = new Date();
+          const expirationDate = new Date(currentDate);
+          expirationDate.setMonth(currentDate.getMonth() + 3);
+          const expirationDateString = expirationDate.toUTCString();
+          document.cookie = `tokenforpython=${response?.data?.token}; expires=${expirationDateString}; path=/`
           router.push("/profile");
         }
       });
@@ -34,6 +43,12 @@ export default function Login() {
   const handleSignUpClick = () => {
     router.push("/signup"); 
   };
+
+  useEffect(()=>{
+    if(userData !="" || userData != null){
+      router.push("/profile"); 
+    }
+  })
 
   return (
     <main>
@@ -114,6 +129,7 @@ export default function Login() {
             width={100}
             height={100}
             alt="Seebiz logo"
+            
           />
         </div>
         <div className="form-container">

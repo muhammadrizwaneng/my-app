@@ -35,6 +35,11 @@ export default function Signup() {
     .then(async(response:any)=>{
       console.log("response",response)
       if(response?.data?.code == 200){
+        const currentDate = new Date();
+          const expirationDate = new Date(currentDate);
+          expirationDate.setMonth(currentDate.getMonth() + 3);
+          const expirationDateString = expirationDate.toUTCString();
+          document.cookie = `tokenforpython=${response?.data?.token}; expires=${expirationDateString}; path=/`
           router.push('/profile')
       }
     })
